@@ -1,4 +1,4 @@
-package storageredis
+package loggingredis
 
 import (
 	"context"
@@ -20,7 +20,7 @@ func init() {
 	caddy.RegisterModule(RedisStorage{})
 	caddycmd.RegisterCommand(caddycmd.Command{
 		Name:  "redis",
-		Short: "Commands for working with the Caddy Redis Storage module",
+		Short: "Commands for working with the Caddy Redis Logging module",
 		CobraFunc: func(cmd *cobra.Command) {
 			rebuildCmd := &cobra.Command{
 				Use:   "repair --config <path>",
@@ -35,7 +35,7 @@ func init() {
 
 func (RedisStorage) CaddyModule() caddy.ModuleInfo {
 	return caddy.ModuleInfo{
-		ID: "caddy.storage.redis",
+		ID: "caddy.logging.redis",
 		New: func() caddy.Module {
 			return New()
 		},

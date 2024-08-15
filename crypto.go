@@ -1,4 +1,4 @@
-package storageredis
+package loggingredis
 
 import (
 	"crypto/aes"

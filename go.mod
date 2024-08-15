@@ -1,6 +1,8 @@
-module github.com/pberkel/caddy-storage-redis
+module github.com/bobby4k/caddy-logging-redis
 
-go 1.20
+go 1.21
+
+toolchain go1.22.5
 
 require (
 	github.com/bsm/redislock v0.9.4
