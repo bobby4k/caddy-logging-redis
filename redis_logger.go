@@ -62,6 +62,15 @@ func (rl *RedisLogger) Provision(ctx caddy.Context) error {
 		MaxRetries:   rl.MaxRetries,
 	})
 
+	// Use context for the Ping command
+	// ctx := context.Background()
+	_, err := rl.client.Ping(ctx).Result()
+	if err != nil {
+		rl.logger.Error("Failed to connect to Redis", zap.Error(err))
+		return fmt.Errorf("could not connect to Redis: %w", err)
+	}
+
+	rl.logger.Info("Successfully connected to Redis")
 	return nil
 }
 
@@ -79,6 +88,7 @@ func (rl *RedisLogger) ServeHTTP(w http.ResponseWriter, r *http.Request, next ca
 	recorder := caddyhttp.NewResponseRecorder(w, nil, nil)
 
 	if err := next.ServeHTTP(recorder, r); err != nil {
+		rl.logger.Error("Error next ServeHTTP", zap.Error(err))
 		return err
 	}
 
@@ -132,6 +142,8 @@ func (rl *RedisLogger) ServeHTTP(w http.ResponseWriter, r *http.Request, next ca
 	ctx := context.Background()
 	if err := rl.client.LPush(ctx, rl.RedisKey, logJSON).Err(); err != nil {
 		rl.logger.Error("Error pushing log entry to Redis", zap.Error(err))
+	} else { //!TEST
+		rl.logger.Info("Successfully pushed log entry to Redis", zap.String("key", rl.RedisKey))
 	}
 
 	return nil

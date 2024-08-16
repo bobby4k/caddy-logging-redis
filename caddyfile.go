@@ -9,7 +9,7 @@ import (
 
 func init() {
 	caddy.RegisterModule(RedisLogger{})
-	httpcaddyfile.RegisterHandlerDirective("redislogger", parseCaddyfile)
+	httpcaddyfile.RegisterHandlerDirective("redis_logger", parseCaddyfile)
 }
 
 func (RedisLogger) CaddyModule() caddy.ModuleInfo {
