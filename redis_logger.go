@@ -70,7 +70,10 @@ func (rl *RedisLogger) Provision(ctx caddy.Context) error {
 		return fmt.Errorf("could not connect to Redis: %w", err)
 	}
 
-	rl.logger.Info("Successfully connected to Redis")
+	rl.logger.Info("Successfully connected to Redis",
+		zap.String("redis_key", rl.RedisKey),
+		zap.String("redis_address", rl.RedisAddress),
+	)
 	return nil
 }
 
